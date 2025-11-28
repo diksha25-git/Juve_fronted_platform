@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nayi Raah | Counseling Sessions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #4c0a8f, #f44336, #ff9800);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 50px 20px;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      width: 95%;
+      max-width: 950px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      text-align: center;
+      color: #4c0a8f;
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+    h3 {
+      text-align: center;
+      color: #555;
+      margin-bottom: 40px;
+      font-weight: 500;
+    }
+    form {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+    }
+    label {
+      font-weight: 600;
+      color: #333;
+      display: block;
+      margin-bottom: 8px;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+    select:focus, input:focus {
+      border-color: #4c0a8f;
+      outline: none;
+      box-shadow: 0 0 6px rgba(76, 10, 143, 0.4);
+    }
+    button {
+      background: #4c0a8f;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 25px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 600;
+    }
+    button:hover {
+      background: #f44336;
+      transform: scale(1.05);
+    }
+    .session-list {
+      margin-top: 30px;
+    }
+    .session-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: 0.3s;
+    }
+    .session-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .session-card h4 {
+      color: #4c0a8f;
+      margin-bottom: 8px;
+    }
+    .join-btn {
+      display: inline-block;
+      background: #ff9800;
+      color: white;
+      padding: 8px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: 0.3s;
+      font-weight: 600;
+    }
+    .join-btn:hover {
+      background: #e67e00;
+    }
+    .no-sessions {
+      text-align: center;
+      color: #555;
+      margin-top: 20px;
+    }
+    .back-btn {
+      display: block;
+      margin: 40px auto 0;
+      background-color: #4c0a8f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .back-btn:hover {
+      background-color: #f44336;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🧠 Counseling Session Booking</h1>
+    <h3>Book, view, and join your sessions with certified counselors</h3>
+
+    <form id="bookingForm">
+      <label for="counselor">Select Counselor:</label>
+      <select id="counselor" required>
+        <option value="">-- Choose Counselor --</option>
+        <option value="Dr. Meera Sharma">Dr. Meera Sharma (Mental Health)</option>
+        <option value="Dr. Aarav Kapoor">Dr. Aarav Kapoor (Life Coach)</option>
+        <option value="Dr. Riya Patel">Dr. Riya Patel (Behavioral Specialist)</option>
+        <option value="Auto Assign">Auto Assign</option>
+      </select>
+
+      <label for="date">Select Date:</label>
+      <input type="date" id="date" required>
+
+      <label for="time">Select Time:</label>
+      <input type="time" id="time" required>
+
+      <button type="submit">📅 Book Session</button>
+    </form>
+
+    <h2 style="color:#4c0a8f; margin-bottom:10px;">📋 Upcoming Sessions</h2>
+    <div id="sessionsContainer" class="session-list">
+      <p class="no-sessions">No sessions booked yet.</p>
+    </div>
+
+    <button class="back-btn" onclick="window.location.href='juvenile-dashboard.html'">⬅ Back to Dashboard</button>
+  </div>
+
+  <script>
+    const form = document.getElementById("bookingForm");
+    const sessionsContainer = document.getElementById("sessionsContainer");
+
+    let sessions = JSON.parse(localStorage.getItem("counselingSessions")) || [];
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const counselor = document.getElementById("counselor").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+
+      if (!counselor || !date || !time) return alert("Please fill all fields!");
+
+      const newSession = {
+        id: Date.now(),
+        counselor,
+        date,
+        time,
+        meetLink: "https://meet.google.com/" + Math.random().toString(36).substring(7)
+      };
+
+      sessions.push(newSession);
+      localStorage.setItem("counselingSessions", JSON.stringify(sessions));
+      form.reset();
+      renderSessions();
+      alert("✅ Session booked successfully!");
+    });
+
+    function renderSessions() {
+      sessionsContainer.innerHTML = "";
+      if (sessions.length === 0) {
+        sessionsContainer.innerHTML = `<p class='no-sessions'>No sessions booked yet.</p>`;
+        return;
+      }
+      sessions.forEach((s) => {
+        const card = document.createElement("div");
+        card.classList.add("session-card");
+        card.innerHTML = `
+          <h4>🧑‍⚕️ Counselor: ${s.counselor}</h4>
+          <p>📅 Date: ${s.date} | ⏰ Time: ${s.time}</p>
+          <a href="${s.meetLink}" target="_blank" class="join-btn">Join Session</a>
+        `;
+        sessionsContainer.appendChild(card);
+      });
+    }
+
+    renderSessions();
+  </script>
+</body>
+</html>

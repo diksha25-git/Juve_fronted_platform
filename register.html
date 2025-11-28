@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JuvenileCare | Register</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="login-container">
+    <h2>Create an Account</h2>
+    <form id="registerForm">
+      <label for="role">Select Role</label>
+      <select id="role" required>
+        <option value="">--Select Role--</option>
+        <option value="Learner">Learner</option>
+        <option value="caregiver">Caregiver</option>
+        <option value="lawyer">Lawyer</option>
+        <option value="parent">Parent</option>
+      </select>
+
+      <label>Full Name</label>
+      <input type="text" id="name" placeholder="Enter your full name" required>
+
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Create password" required>
+
+      <button type="submit">Register</button>
+      <p>Already have an account? <a href="login.html">Login Here</a></p>
+    </form>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

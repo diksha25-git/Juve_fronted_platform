@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nayi Raah | Learner Dashboard</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #4c0a8f, #f44336, #ff9800);
+      background-size: 300% 300%;
+      animation: gradientShift 8s ease infinite;
+      color: #333;
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* ---------- NAVBAR ---------- */
+    header {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+
+    .logo span {
+      color: #ffcc33;
+      font-weight: 800;
+    }
+
+    .user-info {
+      text-align: right;
+    }
+
+    .user-info p {
+      margin: 2px 0;
+      font-size: 14px;
+    }
+
+    /* ---------- DASHBOARD BOX ---------- */
+    .dashboard {
+      max-width: 1200px;
+      margin: 50px auto;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px 50px;
+      border-radius: 15px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease-in-out;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      color: #4c0a8f;
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      color: #777;
+      font-weight: 400;
+      margin-bottom: 40px;
+    }
+
+    /* ---------- MODULE CARDS ---------- */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: 0.3s;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h2 {
+      font-size: 18px;
+      color: #4c0a8f;
+      margin-top: 10px;
+    }
+
+    .card p {
+      color: #555;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .card i {
+      font-size: 40px;
+      color: #ff9800;
+    }
+
+    /* ---------- ANNOUNCEMENTS ---------- */
+    .extras {
+      margin-top: 50px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+    }
+
+    .announcement,
+    .sessions {
+      background: white;
+      border-radius: 15px;
+      flex: 1;
+      min-width: 300px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .announcement h3,
+    .sessions h3 {
+      color: #4c0a8f;
+      border-bottom: 2px solid #f44336;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+    }
+
+    .announcement ul,
+    .sessions ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .announcement li,
+    .sessions li {
+      margin: 10px 0;
+      font-size: 14px;
+    }
+
+    /* ---------- LOGOUT BUTTON ---------- */
+    .logout-btn {
+      margin-top: 40px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background-color: #d32f2f;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">🌿 <span>Nayi Raah</span></div>
+    <div class="user-info" id="userHeaderInfo">
+      <!-- User info dynamically added here -->
+    </div>
+  </header>
+
+  <!-- DASHBOARD MAIN -->
+  <div class="dashboard">
+    <h1>Welcome, <span id="userName">Juvenile</span> 👋</h1>
+    <h3>“Empowering new paths of growth and learning.”</h3>
+
+    <!-- MODULE CARDS -->
+    <div class="cards">
+      <div class="card" onclick="goToPage('courses.html')">
+        <i>🎓</i>
+        <h2>Skill Development</h2>
+        <p>Explore subjects and learn new skills for a brighter future.</p>
+      </div>
+
+      <div class="card" onclick="goToPage('counseling.html')">
+        <i>💬</i>
+        <h2>Counseling</h2>
+        <p>Book a counseling session and receive emotional support.</p>
+      </div>
+
+      <div class="card" onclick="goToPage('progress.html')">
+        <i>📈</i>
+        <h2>Progress Tracker</h2>
+        <p>Monitor your growth and skill improvement.</p>
+      </div>
+
+      <div class="card" onclick="goToPage('profile.html')">
+        <i>👤</i>
+        <h2>My Profile</h2>
+        <p>View and update your personal information.</p>
+      </div>
+    </div>
+
+    <!-- ANNOUNCEMENTS -->
+    <div class="extras">
+      <div class="announcement">
+        <h3>📢 Announcements</h3>
+        <ul>
+          <li>🌟 New module on “Digital Skills for Youth” now available!</li>
+          <li>💬 Counseling slots open for next week.</li>
+          <li>🏆 Top learners will receive certification rewards.</li>
+        </ul>
+      </div>
+
+      <div class="sessions">
+        <h3>📅 Upcoming Sessions</h3>
+        <ul>
+          <li>🧠 Life Skills Workshop – 10th Oct, 11 AM</li>
+          <li>💡 Career Guidance – 13th Oct, 2 PM</li>
+          <li>🎯 Goal Setting Session – 15th Oct, 4 PM</li>
+        </ul>
+      </div>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    // Load current user info
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const userHeaderInfo = document.getElementById("userHeaderInfo");
+    const userName = document.getElementById("userName");
+
+    if (!currentUser) {
+      alert("⚠️ Please login first!");
+      window.location.href = "login.html";
+    } else {
+      userHeaderInfo.innerHTML = `
+        <p><strong>${currentUser.name}</strong></p>
+        <p>${currentUser.email}</p>
+        <p style="font-size:13px; color:#ddd;">Role: ${currentUser.role}</p>
+      `;
+      userName.textContent = currentUser.name;
+    }
+
+    // Navigation
+    function goToPage(page) {
+      window.location.href = page;
+    }
+
+    // Logout
+    function logout() {
+      localStorage.removeItem("currentUser");
+      alert("You have been logged out successfully!");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

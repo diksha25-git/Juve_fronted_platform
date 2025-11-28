@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nayi Raah | Skill Development</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #4c0a8f, #f44336, #ff9800);
+      background-size: 300% 300%;
+      animation: gradientShift 8s ease infinite;
+      color: #333;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      text-align: center;
+      color: #4c0a8f;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      text-align: center;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    select {
+      display: block;
+      margin: 0 auto 40px;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: 2px solid #4c0a8f;
+      border-radius: 8px;
+      color: #333;
+      outline: none;
+      cursor: pointer;
+      width: 280px;
+    }
+
+    .modules {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .module-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: 0.3s;
+    }
+
+    .module-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+    }
+
+    .module-card img {
+      width: 100%;
+      height: 160px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .module-card h2 {
+      color: #4c0a8f;
+      margin-bottom: 10px;
+    }
+
+    .module-card p {
+      color: #555;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .start-btn {
+      background-color: #4c0a8f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .start-btn:hover {
+      background-color: #f44336;
+      transform: scale(1.05);
+    }
+
+    .back-btn {
+      display: block;
+      margin: 40px auto 0;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      background-color: #e68900;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🌿 Skill Development Modules</h1>
+    <h3>Choose your area of interest and explore training options</h3>
+
+    <select id="interestSelect">
+      <option value="">-- Select Your Interest --</option>
+      <option value="technology">💻 Technology</option>
+      <option value="arts">🎨 Arts & Creativity</option>
+      <option value="softskills">🗣️ Soft Skills</option>
+      <option value="vocational">🧰 Vocational Training</option>
+    </select>
+
+    <div class="modules" id="modulesContainer">
+      <p style="text-align:center; color:#777;">Please select an interest to view available modules.</p>
+    </div>
+
+    <button class="back-btn" onclick="goBack()">⬅ Back to Dashboard</button>
+  </div>
+
+  <script>
+    const modulesData = {
+      technology: [
+        { title: "Introduction to Computers", desc: "Learn computer basics — hardware, software, and the internet.", link: "https://www.just.edu.jo/~mqais/CIS99/PDF/Ch.01_Introduction_%20to_computers.pdf", img: "https://images.unsplash.com/photo-1581092334495-1f7c2b5b99cf?auto=format&fit=crop&w=800&q=80" },
+        { title: "Python Programming Basics", desc: "Start your coding journey with Python for problem solving.", link: "https://www.learnpython.org/", img: "https://images.unsplash.com/photo-1581093588401-22d8f2fd47e6?auto=format&fit=crop&w=800&q=80" },
+        { title: "Web Development Fundamentals", desc: "Learn HTML, CSS, and JavaScript to build web pages.", link: "https://www.freecodecamp.org/news/learn-web-development-with-this-free-20-hour-course/", img: "https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&w=800&q=80" },
+        { title: "Digital Literacy", desc: "Understand digital tools, safety, and responsible usage.", link: "https://lincs.ed.gov/sites/default/files/TSTMDigitalLiteracyBrief-508.pdf", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" },
+        { title: "Intro to Artificial Intelligence", desc: "Learn how machines can think and assist humans.", link: "https://www.elementsofai.com/", img: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" },
+        { title: "Mobile App Basics", desc: "Discover how mobile apps are designed and built.", link: "https://www.mygreatlearning.com/mobile-app-development/free-courses", img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" }
+      ],
+
+      arts: [
+        { title: "Creative Drawing & Painting", desc: "Explore your creativity through art and color.", link: "https://www.youtube.com/watch?v=2dM8I3JR2uE", img: "https://images.unsplash.com/photo-1581093448798-5a02e9a8f7d1?auto=format&fit=crop&w=800&q=80" },
+        { title: "Music & Expression", desc: "Use music to express emotions and build confidence.", link: "https://www.youtube.com/watch?v=tVq1E5gJfIo", img: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=800&q=80" },
+        { title: "Photography Basics", desc: "Capture emotions and stories through your camera lens.", link: "https://www.youtube.com/watch?v=7g6Y9Wf4iHk", img: "https://images.unsplash.com/photo-1487412720507-7b5e56c6dc57?auto=format&fit=crop&w=800&q=80" },
+        { title: "Handicrafts & Design", desc: "Create decorative and useful art from everyday materials.", link: "https://www.youtube.com/watch?v=4sXK6qE5nT0", img: "https://images.unsplash.com/photo-1593642532400-2682810df593?auto=format&fit=crop&w=800&q=80" },
+        { title: "Dance for Wellbeing", desc: "Express yourself through rhythm and movement.", link: "https://www.youtube.com/watch?v=XDaC7QhQvN8", img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" }
+      ],
+
+      softskills: [
+        { 
+            title: "Communication Skills", 
+            desc: "Comprehensive guide to verbal and non-verbal communication.", 
+            link: "https://edu.gcfglobal.org/en/communication-skills/", 
+            img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" 
+        },
+        { 
+            title: "Leadership Toolkit", 
+            desc: "Articles and tools on how to lead and manage teams effectively.", 
+            link: "https://www.mindtools.com/pages/article/newLDR_41.htm", 
+            img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" 
+        },
+        { 
+            title: "Time Management Guide", 
+            desc: "University guide to managing academic and life time effectively.", 
+            link: "https://students.dartmouth.edu/academic-skills/learning-resources/time-management", 
+            img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" 
+        },
+        { 
+            title: "Emotional Intelligence", 
+            desc: "In-depth reading on improving EQ and relationships.", 
+            link: "https://www.helpguide.org/articles/mental-health/emotional-intelligence-eq.htm", 
+            img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80" 
+        },
+        { 
+            title: "Critical Thinking", 
+            desc: "Strategies for better problem solving and decision making.", 
+            link: "https://www.skillsyouneed.com/learn/critical-thinking.html", 
+            img: "https://images.unsplash.com/photo-1554774853-b414d2a2d51e?auto=format&fit=crop&w=800&q=80" 
+        }
+      ],
+
+      vocational: [
+        { title: "Tailoring & Stitching", desc: "Learn tailoring as a self-sustaining livelihood skill.", link: "https://www.youtube.com/watch?v=2FlqQAg4s5w", img: "https://images.unsplash.com/photo-1562157873-818bc0726f58?auto=format&fit=crop&w=800&q=80" },
+        { title: "Basic Electrical Repair", desc: "Understand home wiring, safety, and appliance repair.", link: "https://www.youtube.com/watch?v=KDWK6KY4f9U", img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" },
+        { title: "Baking & Cooking Essentials", desc: "Develop cooking skills and explore culinary creativity.", link: "https://www.youtube.com/watch?v=bkDNc_XCQFY", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" },
+        { title: "Woodwork Basics", desc: "Learn basic carpentry and safe handling of tools.", link: "https://www.youtube.com/watch?v=JZ7o7fZbeFE", img: "https://images.unsplash.com/photo-1577140909073-5d26b2e9b1b0?auto=format&fit=crop&w=800&q=80" },
+        { title: "Beautician Course", desc: "Learn grooming, skincare, and hairdressing basics.", link: "https://www.youtube.com/watch?v=9e_bQGcbthY", img: "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=800&q=80" },
+        { title: "Gardening & Landscaping", desc: "Develop a connection with nature while learning planting skills.", link: "https://www.youtube.com/watch?v=5ZlZLkTq1mU", img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80" }
+      ]
+    };
+
+    const modulesContainer = document.getElementById("modulesContainer");
+    const interestSelect = document.getElementById("interestSelect");
+
+    interestSelect.addEventListener("change", function () {
+      const selectedInterest = this.value;
+      modulesContainer.innerHTML = "";
+
+      if (selectedInterest && modulesData[selectedInterest]) {
+        modulesData[selectedInterest].forEach((module) => {
+          const card = document.createElement("div");
+          card.classList.add("module-card");
+          card.innerHTML = `
+            <img src="${module.img}" alt="${module.title}">
+            <h2>${module.title}</h2>
+            <p>${module.desc}</p>
+            <button class="start-btn" onclick="openModule('${module.link}')">Start Module</button>
+          `;
+          modulesContainer.appendChild(card);
+        });
+      } else {
+        modulesContainer.innerHTML = `<p style="text-align:center; color:#555;">Please select an interest to view available modules.</p>`;
+      }
+    });
+
+    function openModule(link) {
+      if (!link || link === "#") {
+        alert("📘 Study material will be added soon!");
+      } else {
+        window.open(link, "_blank");
+      }
+    }
+
+    function goBack() {
+      window.location.href = "juvenile-dashboard.html";
+    }
+  </script>
+</body>
+</html>

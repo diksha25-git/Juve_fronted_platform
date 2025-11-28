@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nayi Raah | My Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #4c0a8f, #f44336, #ff9800);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 50px 20px;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      width: 95%;
+      max-width: 1100px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      text-align: center;
+      color: #4c0a8f;
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+
+    h3 {
+      text-align: center;
+      color: #555;
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .profile-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .profile-card h2 {
+      color: #4c0a8f;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    .profile-card p {
+      margin: 8px 0;
+      font-size: 15px;
+      color: #444;
+    }
+
+    .session-list {
+      margin-top: 10px;
+    }
+
+    .session-card {
+      background: #f9f9ff;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 8px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+    }
+
+    .session-card h4 {
+      color: #4c0a8f;
+      margin-bottom: 6px;
+    }
+
+    .back-btn {
+      display: block;
+      margin: 40px auto 0;
+      background-color: #4c0a8f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      background-color: #f44336;
+      transform: scale(1.05);
+    }
+
+    .highlight {
+      color: #f44336;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>👤 Juvenile Profile</h1>
+    <h3>Detailed overview of Juvenile, Caregiver, and Legal support system</h3>
+
+    <div class="profile-grid">
+      <!-- Juvenile Info -->
+      <div class="profile-card">
+        <h2>Juvenile Information</h2>
+        <p><strong>Name:</strong> Rahul Verma</p>
+        <p><strong>Age:</strong> 16 years</p>
+        <p><strong>Gender:</strong> Male</p>
+        <p><strong>Juvenile ID:</strong> JV2025-001</p>
+        <p><strong>Education Level:</strong> 10th Grade (Open School)</p>
+        <p><strong>Status:</strong> <span class="highlight">Under Rehabilitation</span></p>
+      </div>
+
+      <!-- Caregiver Info -->
+      <div class="profile-card">
+        <h2>Caregiver Details</h2>
+        <p><strong>Name:</strong> Suman Verma</p>
+        <p><strong>Relation:</strong> Mother</p>
+        <p><strong>Age:</strong> 38 years</p>
+        <p><strong>Occupation:</strong> Tailoring Worker</p>
+        <p><strong>Contact:</strong> +91 9876543210</p>
+        <p><strong>Email:</strong> suman.verma@example.com</p>
+        <p><strong>Support Programs:</strong> Parenting Guidance, Emotional Support Sessions</p>
+        <p><strong>Address:</strong> Sector 21, Gurugram, Haryana</p>
+      </div>
+
+      <!-- Lawyer Info -->
+      <div class="profile-card">
+        <h2>Lawyer Details</h2>
+        <p><strong>Name:</strong> Adv. Priya Mehta</p>
+        <p><strong>Specialization:</strong> Juvenile Justice & Rehabilitation</p>
+        <p><strong>Law Firm:</strong> Mehta Legal Associates</p>
+        <p><strong>Contact:</strong> +91 9812345678</p>
+        <p><strong>Email:</strong> priya.mehta@nayi-raah.org</p>
+        <p><strong>Case Status:</strong> Active</p>
+        <p><strong>Last Hearing Date:</strong> 15 September 2025</p>
+        <p><strong>Next Hearing:</strong> 10 November 2025</p>
+      </div>
+    </div>
+
+    <!-- Counseling Info -->
+    <div class="profile-card" style="margin-top:30px;">
+      <h2>Counseling Session History</h2>
+      <div id="sessionList" class="session-list">
+        <p style="color:#666;">Loading your session history...</p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="window.location.href='juvenile-dashboard.html'">⬅ Back to Dashboard</button>
+  </div>
+
+  <script>
+    const sessions = JSON.parse(localStorage.getItem("counselingSessions")) || [];
+    const sessionList = document.getElementById("sessionList");
+
+    function renderSessions() {
+      sessionList.innerHTML = "";
+      if (sessions.length === 0) {
+        sessionList.innerHTML = `<p style="color:#777;">No counseling sessions booked yet.</p>`;
+        return;
+      }
+
+      sessions.forEach((s) => {
+        const card = document.createElement("div");
+        card.classList.add("session-card");
+        card.innerHTML = `
+          <h4>🧑‍⚕️ ${s.counselor}</h4>
+          <p>📅 ${s.date} | ⏰ ${s.time}</p>
+          <p><a href="${s.meetLink}" target="_blank" style="color:#4c0a8f; text-decoration:none;">Join Link</a></p>
+        `;
+        sessionList.appendChild(card);
+      });
+    }
+
+    renderSessions();
+  </script>
+</body>
+</html>

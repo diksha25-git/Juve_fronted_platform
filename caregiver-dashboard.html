@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nayi Raah — Caregiver Dashboard (Realistic)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --purple:#5b21b6;
+      --accent:#ff6f3c;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --glass: rgba(255,255,255,0.85);
+      --success:#10b981;
+      --danger:#ef4444;
+      --bg: linear-gradient(135deg,#0f172a 0%, #0b1220 50%, #021124 100%);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Poppins",sans-serif;
+      background: linear-gradient(180deg,#eef2ff 0%, #fff 100%);
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .topbar{
+      display:flex;justify-content:space-between;align-items:center;padding:18px 30px;background:linear-gradient(90deg, rgba(91,33,182,0.12), rgba(255,111,60,0.06));
+      border-bottom:1px solid rgba(15,23,42,0.04);
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .brand .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--accent));display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    .brand h1{font-size:18px;margin:0;color:var(--purple)}
+    .top-actions{display:flex;gap:14px;align-items:center}
+    .search {padding:8px 12px;border-radius:12px;border:1px solid #e6e6f0;background:white}
+    .icon-btn{background:transparent;border:0;padding:8px;border-radius:10px;cursor:pointer}
+    .bell{position:relative}
+    .badge{position:absolute;top:-6px;right:-6px;background:var(--danger);color:white;font-size:11px;padding:4px 6px;border-radius:12px}
+
+    .wrap{max-width:1200px;margin:24px auto;padding:12px}
+    .grid{display:grid;grid-template-columns: 320px 1fr 360px;gap:18px}
+
+    /* Left column - caregiver card + juveniles */
+    .card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(16,24,40,0.06)}
+    .caregiver{
+      display:flex;gap:14px;align-items:center;
+    }
+    .avatar-large{width:72px;height:72px;border-radius:14px;background:#f3f0ff;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--purple);font-size:20px}
+    .caregiver h2{margin:0;font-size:18px;color:var(--purple)}
+    .meta{color:var(--muted);font-size:13px;margin-top:6px}
+    .stat-row{display:flex;gap:10px;margin-top:12px}
+    .stat{flex:1;background:linear-gradient(180deg,#fff,#fbfbff);padding:10px;border-radius:10px;text-align:center}
+    .stat h3{margin:0;color:var(--purple);font-size:16px}
+    .stat p{margin:0;color:var(--muted);font-size:12px}
+
+    .juvenile-list{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+    .juvenile-item{display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px;border:1px solid #f0f0f5;background:linear-gradient(180deg,#fff,#fff)}
+    .juvenile-item .thumb{width:56px;height:56px;border-radius:10px;background:#fff url('https://images.unsplash.com/photo-1548142813-6f9d6a1e7c21?auto=format&fit=crop&w=400&q=60') center/cover}
+    .juvenile-item .info p{margin:0;color:#0f172a;font-weight:600}
+    .juvenile-item .info small{color:var(--muted);display:block;margin-top:6px}
+
+    .btn{padding:8px 12px;border-radius:10px;border:0;background:var(--purple);color:white;cursor:pointer}
+    .btn.alt{background:var(--accent)}
+    .btn.ghost{background:transparent;border:1px solid #eae9ff;color:var(--purple)}
+
+    /* center column - sessions + resources */
+    .center-col{display:flex;flex-direction:column;gap:16px}
+    .sessions-list{display:flex;flex-direction:column;gap:12px}
+    .session-card{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px;border-radius:12px;border:1px solid #eef2ff;background:linear-gradient(180deg,#fff,#fbfbff)}
+    .session-left{display:flex;gap:12px;align-items:center}
+    .session-left .s-thumb{width:56px;height:56px;border-radius:10px;background:#fff url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=60') center/cover}
+    .session-info p{margin:0;font-weight:600;color:#0f172a}
+    .session-meta{color:var(--muted);font-size:13px}
+
+    .session-actions{display:flex;gap:8px}
+    .badge-status{padding:6px 8px;border-radius:10px;font-weight:600;font-size:12px}
+
+    .resources{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .resource-card{padding:12px;border-radius:10px;border:1px solid #f0f3ff;background:linear-gradient(180deg,#fff,#fff)}
+
+    /* right column - chat + progress */
+    .chat{display:flex;flex-direction:column;height:520px}
+    .chat-window{flex:1;padding:12px;border-radius:12px;border:1px solid #eef2ff;background:#fff;overflow:auto}
+    .chat-input{display:flex;gap:8px;margin-top:10px}
+    .message{padding:10px;border-radius:10px;margin-bottom:8px;max-width:80%}
+    .from-caregiver{background:linear-gradient(90deg,#e6fffa,#ecfeff);align-self:flex-end}
+    .from-juvenile{background:#fff;border:1px solid #f0f3ff;align-self:flex-start}
+    .progress-cards{display:flex;flex-direction:column;gap:10px}
+
+    .small-muted{color:var(--muted);font-size:13px}
+
+    footer{max-width:1200px;margin:18px auto;text-align:center;color:var(--muted);font-size:13px}
+    @media (max-width:1100px){
+      .grid{grid-template-columns:1fr; padding:12px}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">NR</div>
+      <div>
+        <h1>Nayi Raah</h1>
+        <div class="small-muted">Caregiver Portal</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <input class="search" placeholder="Search juvenile or session..." id="globalSearch"/>
+      <button class="icon-btn bell" id="notifBtn" title="Notifications">
+        🔔
+        <span class="badge" id="notifBadge" style="display:none">0</span>
+      </button>
+      <button class="icon-btn" id="openDfd">
+        📄 DFD
+      </button>
+      <button class="icon-btn" id="logoutBtn" title="Logout">🚪 Logout</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="grid">
+      <!-- LEFT -->
+      <div>
+        <div class="card caregiver">
+          <div class="avatar-large" id="cgAvatar">C</div>
+          <div>
+            <h2 id="cgName">Caregiver Name</h2>
+            <div class="meta" id="cgEmail">caregiver@example.com</div>
+            <div class="meta" id="cgExtra">Guardian of: JV2025-001</div>
+
+            <div class="stat-row">
+              <div class="stat"><h3 id="statActive">0</h3><p>Active Cases</p></div>
+              <div class="stat"><h3 id="statUpcoming">0</h3><p>Upcoming Sessions</p></div>
+              <div class="stat"><h3 id="statDocs">0</h3><p>Shared Files</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3 style="margin:0 0 12px">Assigned Juveniles</h3>
+          <div class="juvenile-list" id="juvenileList">
+            <!-- JS populates -->
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER -->
+      <div class="center-col">
+        <div class="card">
+          <h3 style="margin:0 0 12px">Upcoming Sessions</h3>
+          <div class="sessions-list" id="sessionsList">
+            <!-- session cards -->
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 12px">Resources & Quick Share</h3>
+          <div style="display:flex;gap:12px;margin-bottom:12px">
+            <input id="resourceUrl" placeholder="YouTube or PDF link" style="flex:1;padding:10px;border-radius:8px;border:1px solid #e6e7f8">
+            <button class="btn" id="shareResourceBtn">Share</button>
+          </div>
+
+          <div class="resources" id="resourcesGrid">
+            <!-- shared resources -->
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 12px">Chat with Juvenile</h3>
+          <div style="display:flex;gap:10px;margin-bottom:10px;align-items:center">
+            <select id="chatSelect" style="flex:1;padding:10px;border-radius:8px;border:1px solid #e6e7f8"></select>
+            <button class="btn alt" id="callBtn">Call</button>
+          </div>
+
+          <div class="chat">
+            <div class="chat-window" id="chatWindow">
+              <!-- messages -->
+            </div>
+
+            <div class="chat-input">
+              <input id="chatTxt" placeholder="Write a supportive message..." style="flex:1;padding:10px;border-radius:10px;border:1px solid #e6e7f8"/>
+              <button class="btn" id="sendChatBtn">Send</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3 style="margin:0 0 12px">Juvenile Progress</h3>
+          <div class="progress-cards" id="progressCards">
+            <!-- small progress items -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Built for demo • Nayi Raah — Juvenile Rehabilitation Platform</footer>
+
+  <script>
+    // -----------------------------
+    // Utilities & Data Initialization
+    // -----------------------------
+    const USER_KEY = 'nayi_current_user';
+    const ASSIGNED_KEY = 'assignedJuveniles';
+    const SESSIONS_KEY = 'counselingSessions';
+    const DOCS_KEY = 'caregiverDocs';
+    const NOTES_KEY = 'caregiverNotes';
+    const RES_KEY = 'caregiverResources';
+    const CHAT_KEY = 'caregiverChat';
+
+    // speech helper
+    function speak(text){
+      if(!('speechSynthesis' in window)) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.rate = 1;
+      utter.lang = 'en-US';
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }
+
+    // sample fallback data
+    if(!localStorage.getItem(ASSIGNED_KEY)){
+      const sample = [
+        { id: 'JV2025-001', name: 'Rahul Verma', age:16, guardian:'Suman Verma', guardianEmail:'caregiver@example.com', contact:'+919876543210', progress: 45, image:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=60' },
+        { id: 'JV2025-002', name: 'Anita Singh', age:15, guardian:'Geeta Singh', guardianEmail:'geeta@example.com', contact:'+919812345678', progress: 68, image:'https://images.unsplash.com/photo-1545996124-1a6d0aedb1b8?auto=format&fit=crop&w=400&q=60' }
+      ];
+      localStorage.setItem(ASSIGNED_KEY, JSON.stringify(sample));
+    }
+
+    if(!localStorage.getItem(SESSIONS_KEY)){
+      const sampleS = [
+        { id: 's1', juvenileId:'JV2025-001', juvenileName:'Rahul Verma', counselor:'Dr. Meera Sharma', date:'2025-11-24', time:'10:00 AM', status:'pending', meetLink:'' },
+        { id: 's2', juvenileId:'JV2025-002', juvenileName:'Anita Singh', counselor:'Dr. Riya Patel', date:'2025-11-26', time:'3:00 PM', status:'pending', meetLink:'' }
+      ];
+      localStorage.setItem(SESSIONS_KEY, JSON.stringify(sampleS));
+    }
+
+    // load data
+    let currentUser = JSON.parse(localStorage.getItem(USER_KEY)) || null;
+    // fallback to OTP-scheme keys
+    if(!currentUser){
+      const email = localStorage.getItem('loggedInEmail');
+      const role = localStorage.getItem('loggedInRole');
+      if(email || role) currentUser = { email: email || '', role: role || 'caregiver', name: email ? email.split('@')[0] : 'Caregiver' };
+    }
+
+    let juvenilesAll = JSON.parse(localStorage.getItem(ASSIGNED_KEY)) || [];
+    let counselingSessions = JSON.parse(localStorage.getItem(SESSIONS_KEY)) || [];
+    let docs = JSON.parse(localStorage.getItem(DOCS_KEY)) || {};
+    let notes = JSON.parse(localStorage.getItem(NOTES_KEY)) || {};
+    let resources = JSON.parse(localStorage.getItem(RES_KEY)) || [];
+    let chats = JSON.parse(localStorage.getItem(CHAT_KEY)) || {};
+
+    // filter juveniles for logged-in caregiver (by guardianEmail or extra)
+    let juveniles = juvenilesAll.slice();
+    if(currentUser && currentUser.role === 'caregiver'){
+      const email = (currentUser.email || '').toLowerCase();
+      const extra = (currentUser.extra || '').toLowerCase();
+      const filtered = juvenilesAll.filter(j => (j.guardianEmail && j.guardianEmail.toLowerCase() === email) || (extra && (extra.includes(j.id.toLowerCase()) || extra.includes(j.guardian.toLowerCase()))));
+      if(filtered.length) juveniles = filtered;
+    }
+
+    // -----------------------------
+    // UI bindings
+    // -----------------------------
+    const cgNameEl = document.getElementById('cgName');
+    const cgEmailEl = document.getElementById('cgEmail');
+    const cgExtraEl = document.getElementById('cgExtra');
+    const cgAvatar = document.getElementById('cgAvatar');
+
+    const juvenileListEl = document.getElementById('juvenileList');
+    const sessionsListEl = document.getElementById('sessionsList');
+    const selectChatEl = document.getElementById('chatSelect');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatTxt = document.getElementById('chatTxt');
+    const sendChatBtn = document.getElementById('sendChatBtn');
+    const progressCards = document.getElementById('progressCards');
+    const resourcesGrid = document.getElementById('resourcesGrid');
+    const statActive = document.getElementById('statActive');
+    const statUpcoming = document.getElementById('statUpcoming');
+    const statDocs = document.getElementById('statDocs');
+    const notifBadge = document.getElementById('notifBadge');
+
+    // header actions
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem(USER_KEY);
+      localStorage.removeItem('loggedInEmail');
+      localStorage.removeItem('loggedInRole');
+      alert('Logged out');
+      window.location.href = 'index.html';
+    });
+
+    // open DFD link (developer uploaded file path)
+    document.getElementById('openDfd').addEventListener('click', ()=> {
+      // path from your uploaded file
+      const filePath = '/mnt/data/A_Data_Flow_Diagram_(DFD)_in_a_digital_vector_grap.png';
+      window.open(filePath, '_blank');
+    });
+
+    // notifications (count of pending)
+    function updateNotifCount(){
+      const pending = counselingSessions.filter(s => s.status === 'pending' && (!s.juvenileId || juveniles.some(j => j.id === s.juvenileId))).length;
+      if(pending > 0){ notifBadge.style.display='inline-block'; notifBadge.textContent = pending; } else notifBadge.style.display='none';
+    }
+
+    // render juveniles
+    function renderJuveniles(){
+      juvenileListEl.innerHTML = '';
+      selectChatEl.innerHTML = '';
+      juveniles.forEach(j => {
+        const div = document.createElement('div');
+        div.className = 'juvenile-item';
+        div.innerHTML = `
+          <div class="thumb" style="background-image:url('${j.image || ''}');background-size:cover;background-position:center"></div>
+          <div class="info" style="flex:1">
+            <p>${j.name} <small style="color:var(--muted)">(${j.id})</small></p>
+            <small class="small-muted">${j.age} yrs • Guardian: ${j.guardian}</small>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn" onclick="openProfile('${j.id}')">Profile</button>
+            <button class="btn ghost" onclick="selectForAction('${j.id}')">Select</button>
+          </div>
+        `;
+        juvenileListEl.appendChild(div);
+
+        const opt = document.createElement('option');
+        opt.value = j.id;
+        opt.textContent = `${j.name} (${j.id})`;
+        selectChatEl.appendChild(opt);
+      });
+
+      // update stats
+      statActive.textContent = juveniles.length;
+      statDocs.textContent = Object.keys(docs).reduce((acc,k)=> acc + (docs[k].length || 0), 0);
+    }
+
+    // open profile (navigate)
+    function openProfile(id){
+      window.location.href = `profile.html?id=${encodeURIComponent(id)}`;
+    }
+
+    function selectForAction(id){
+      selectChatEl.value = id;
+      loadChat(id);
+      scrollChatToBottom();
+      alert('Selected juvenile ' + id);
+    }
+
+    // render sessions
+    function renderSessions(){
+      sessionsListEl.innerHTML = '';
+      const now = new Date();
+      const relevant = counselingSessions.filter(s => {
+        // show if juvenile belongs to caregiver or no juvenileId
+        if(s.juvenileId) return juveniles.some(j => j.id === s.juvenileId);
+        if(s.juvenileName) return juveniles.some(j => s.juvenileName.toLowerCase().includes(j.name.toLowerCase()));
+        return true;
+      });
+
+      relevant.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'session-card';
+        const statusBadge = s.status === 'approved' ? `<span class="badge-status" style="background:${getComputedStyle(document.documentElement).getPropertyValue('--success') || '#10b981'};color:white">Approved</span>`
+                        : s.status === 'declined' ? `<span class="badge-status" style="background:${getComputedStyle(document.documentElement).getPropertyValue('--danger') || '#ef4444'};color:white">Declined</span>`
+                        : `<span class="badge-status" style="background:#f3f4f6;color:#0f172a">Pending</span>`;
+
+        card.innerHTML = `
+          <div class="session-left">
+            <div class="s-thumb"></div>
+            <div class="session-info">
+              <p>${s.juvenileName || (s.juvenileId || 'Unknown')}</p>
+              <div class="session-meta">${s.counselor} • ${s.date} • ${s.time}</div>
+            </div>
+          </div>
+
+          <div style="text-align:right;">
+            ${statusBadge}
+            <div class="session-actions" style="margin-top:10px">
+              <button class="btn" onclick="approveSession('${s.id}')">Approve & Notify</button>
+              <button class="btn alt" onclick="declineSession('${s.id}')">Decline</button>
+              <button class="btn ghost" onclick="sessionDetails('${s.id}')">Details</button>
+            </div>
+          </div>
+        `;
+        sessionsListEl.appendChild(card);
+      });
+
+      statUpcoming.textContent = relevant.length;
+      updateNotifCount();
+    }
+
+    // session actions
+    function approveSession(id){
+      const s = counselingSessions.find(x=>x.id===id);
+      if(!s) return alert('Session not found');
+      s.status = 'approved';
+      // set join link
+      s.meetLink = s.meetLink || ('https://meet.google.com/' + Math.random().toString(36).substring(2,9));
+      // attach juvenileId if caregiver has one selected
+      const sel = document.getElementById('chatSelect').value;
+      if(!s.juvenileId && sel) {
+        s.juvenileId = sel;
+        const j = juvenilesAll.find(jj => jj.id === sel);
+        if(j) s.juvenileName = j.name;
+      }
+      localStorage.setItem(SESSIONS_KEY, JSON.stringify(counselingSessions));
+      renderSessions();
+      const text = `Session for ${s.juvenileName || s.juvenileId} approved for ${s.date} at ${s.time}. Join link created.`;
+      toast(text);
+      speak(text);
+    }
+
+    function declineSession(id){
+      const s = counselingSessions.find(x=>x.id===id);
+      if(!s) return;
+      s.status = 'declined';
+      localStorage.setItem(SESSIONS_KEY, JSON.stringify(counselingSessions));
+      renderSessions();
+      const text = `Session for ${s.juvenileName || s.juvenileId} has been declined.`;
+      toast(text);
+      speak(text);
+    }
+
+    function sessionDetails(id){
+      const s = counselingSessions.find(x=>x.id===id);
+      if(!s) return alert('Not found');
+      alert(`Counselor: ${s.counselor}\nJuvenile: ${s.juvenileName || s.juvenileId}\nDate: ${s.date}\nTime: ${s.time}\nStatus: ${s.status}\nLink: ${s.meetLink || 'N/A'}`);
+    }
+
+    // resources
+    document.getElementById('shareResourceBtn').addEventListener('click', ()=>{
+      const url = document.getElementById('resourceUrl').value.trim();
+      if(!url) return alert('Paste a link to share.');
+      const targetId = document.getElementById('chatSelect').value || (juveniles[0] && juveniles[0].id);
+      const entry = { id: 'r_' + Date.now(), url, juvenileId: targetId, by: currentUser?.name || 'Caregiver', at: new Date().toLocaleString() };
+      resources.unshift(entry);
+      localStorage.setItem(RES_KEY, JSON.stringify(resources));
+      document.getElementById('resourceUrl').value = '';
+      renderResources();
+      toast('Resource shared');
+      speak('Resource shared with the juvenile');
+    });
+
+    function renderResources(){
+      resourcesGrid.innerHTML = '';
+      if(resources.length === 0) { resourcesGrid.innerHTML = '<div class="small-muted">No shared resources yet.</div>'; return; }
+      resources.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'resource-card';
+        div.innerHTML = `<strong>${r.url}</strong><div class="small-muted">To: ${r.juvenileId} • ${r.at}</div><div style="margin-top:8px"><a href="${r.url}" target="_blank" class="btn ghost">Open</a></div>`;
+        resourcesGrid.appendChild(div);
+      });
+    }
+
+    // CHAT
+    function loadChat(jid){
+      chatWindow.innerHTML = '';
+      if(!jid) { chatWindow.innerHTML = '<div class="small-muted">Select a juvenile to load chat</div>'; return; }
+      const history = chats[jid] || [];
+      history.forEach(m => {
+        const el = document.createElement('div');
+        el.className = 'message ' + (m.from === 'caregiver' ? 'from-caregiver' : 'from-juvenile');
+        el.innerHTML = `<div style="font-size:13px;color:var(--muted)">${m.time}</div><div style="margin-top:6px">${m.text}</div>`;
+        chatWindow.appendChild(el);
+      });
+      scrollChatToBottom();
+    }
+
+    function scrollChatToBottom(){ chatWindow.scrollTop = chatWindow.scrollHeight; }
+
+    sendChatBtn.addEventListener('click', ()=>{
+      const jid = selectChatEl.value;
+      const txt = chatTxt.value.trim();
+      if(!jid) return alert('Select juvenile');
+      if(!txt) return;
+      const entry = { from:'caregiver', text: txt, time: new Date().toLocaleString() };
+      chats[jid] = chats[jid] || [];
+      chats[jid].push(entry);
+      localStorage.setItem(CHAT_KEY, JSON.stringify(chats));
+      chatTxt.value = '';
+      loadChat(jid);
+      toast('Message sent');
+      speak('Message sent to ' + (juvenilesAll.find(j=>j.id===jid)?.name || jid));
+    });
+
+    // load chat on select
+    selectChatEl.addEventListener('change', ()=> loadChat(selectChatEl.value) );
+
+    // progress
+    function renderProgress(){
+      progressCards.innerHTML = '';
+      juveniles.forEach(j => {
+        const div = document.createElement('div');
+        div.className = 'resource-card';
+        div.innerHTML = `<strong>${j.name}</strong><div class="small-muted">${j.progress || 0}% complete</div>
+        <div style="height:8px;background:#f1f5f9;border-radius:6px;margin-top:8px">
+          <div style="width:${j.progress || 0}%;height:8px;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:6px"></div>
+        </div>
+        <div style="margin-top:8px"><button class="btn ghost" onclick="openProfile('${j.id}')">View Full</button></div>`;
+        progressCards.appendChild(div);
+      });
+    }
+
+    // toast helper
+    function toast(msg){
+      const t = document.createElement('div');
+      t.style.position='fixed';t.style.right='20px';t.style.bottom='20px';t.style.background='rgba(15,23,42,0.9)';
+      t.style.color='white';t.style.padding='12px 16px';t.style.borderRadius='10px';t.style.boxShadow='0 8px 30px rgba(0,0,0,0.2)';
+      t.style.zIndex=9999;t.textContent=msg;
+      document.body.appendChild(t);
+      setTimeout(()=> t.style.opacity=0,3000);
+      setTimeout(()=> document.body.removeChild(t),3800);
+    }
+
+    // initial render
+    (function init(){
+      // header info
+      cgNameEl.textContent = currentUser?.name ? capitalize(currentUser.name) : 'Caregiver';
+      cgEmailEl.textContent = currentUser?.email || 'caregiver@example.com';
+      cgExtraEl.textContent = 'Assigned juveniles: ' + (juveniles.map(j=>j.id).join(', ') || 'None');
+      cgAvatar.textContent = (currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'C');
+
+      renderJuveniles();
+      renderSessions();
+      renderResources();
+      renderProgress();
+      updateNotifCount();
+
+      // select first juvenile in chat
+      if(juveniles[0]) {
+        selectChatEl.value = juveniles[0].id;
+        loadChat(juveniles[0].id);
+      }
+    })();
+
+    // small helper
+    function capitalize(s){ if(!s) return s; return s.charAt(0).toUpperCase() + s.slice(1); }
+
+    // expose some functions for inline handlers
+    window.approveSession = approveSession;
+    window.declineSession = declineSession;
+    window.sessionDetails = sessionDetails;
+    window.openProfile = openProfile;
+    window.selectForAction = selectForAction;
+
+    // global search
+    document.getElementById('globalSearch').addEventListener('input', function(){
+      const q = this.value.trim().toLowerCase();
+      if(!q) { renderJuveniles(); renderSessions(); return; }
+      // filter juveniles and sessions
+      const jFilter = juvenilesAll.filter(j => j.name.toLowerCase().includes(q) || j.id.toLowerCase().includes(q));
+      juvenileListEl.innerHTML = '';
+      jFilter.forEach(j => {
+        const el = document.createElement('div'); el.className='juvenile-item';
+        el.innerHTML = `<div class="thumb" style="background-image:url('${j.image||''}');background-size:cover"></div><div class="info"><p>${j.name}</p><small class="small-muted">${j.id}</small></div><div style="display:flex;flex-direction:column;gap:8px"><button class="btn" onclick="openProfile('${j.id}')">Profile</button></div>`;
+        juvenileListEl.appendChild(el);
+      });
+      // filter sessions
+      sessionsListEl.innerHTML='';
+      counselingSessions.filter(s=> (s.juvenileName||'').toLowerCase().includes(q) || (s.juvenileId||'').toLowerCase().includes(q)).forEach(s=>{
+        const card=document.createElement('div');card.className='session-card';
+        card.innerHTML=`<div>${s.juvenileName||s.juvenileId}</div><div class="session-actions"><button class="btn" onclick="approveSession('${s.id}')">Approve</button></div>`;
+        sessionsListEl.appendChild(card);
+      });
+    });
+
+  </script>
+</body>
+</html>

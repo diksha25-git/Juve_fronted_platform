@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nayi Raah | Progress Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #4c0a8f, #f44336, #ff9800);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      color: #4c0a8f;
+      margin-bottom: 10px;
+      font-size: 2.2rem;
+    }
+    h3 {
+      color: #666;
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+
+    .progress-overall {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 20px auto 40px;
+    }
+    .circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(#4c0a8f var(--progress), #ddd 0deg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .circle span {
+      position: absolute;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #4c0a8f;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+    .category-card {
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      transition: 0.3s;
+    }
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .category-card h2 {
+      color: #4c0a8f;
+      margin-bottom: 15px;
+    }
+
+    .progress-container {
+      background: #eee;
+      border-radius: 20px;
+      height: 15px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4c0a8f, #f44336, #ff9800);
+      transition: width 0.5s ease;
+    }
+
+    .modules {
+      text-align: left;
+      font-size: 14px;
+    }
+    .modules label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    input[type="checkbox"] {
+      accent-color: #4c0a8f;
+      margin-right: 8px;
+    }
+
+    .motivation {
+      margin-top: 25px;
+      font-weight: 600;
+      color: #4c0a8f;
+      font-size: 1rem;
+    }
+
+    .back-btn {
+      margin-top: 40px;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .back-btn:hover {
+      background-color: #e68900;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Nayi Raah Progress Tracker</h1>
+    <h3>Keep track of your journey towards learning and growth</h3>
+
+    <!-- Circular Overall Progress -->
+    <div class="progress-overall">
+      <div class="circle" id="overallCircle" style="--progress: 0deg;">
+        <span id="overallText">0%</span>
+      </div>
+    </div>
+
+    <!-- Category Progress -->
+    <div class="categories" id="categoriesContainer"></div>
+
+    <div class="motivation" id="motivationText">Let’s begin your learning journey!</div>
+
+    <button class="back-btn" onclick="window.location.href='juvenile-dashboard.html'">⬅ Back to Dashboard</button>
+  </div>
+
+  <script>
+    const categories = {
+      "Technology 💻": [
+        "Introduction to Computers",
+        "Python Programming",
+        "Web Development",
+        "Digital Literacy",
+        "Artificial Intelligence"
+      ],
+      "Arts & Creativity 🎨": [
+        "Drawing & Painting",
+        "Music & Expression",
+        "Photography Basics",
+        "Handicrafts",
+        "Dance for Wellbeing"
+      ],
+      "Soft Skills 🗣️": [
+        "Communication Skills",
+        "Teamwork & Leadership",
+        "Time Management",
+        "Emotional Intelligence",
+        "Decision Making"
+      ],
+      "Vocational Training 🧰": [
+        "Tailoring",
+        "Cooking & Baking",
+        "Electrical Repair",
+        "Woodwork",
+        "Beautician Training"
+      ]
+    };
+
+    const progressData = JSON.parse(localStorage.getItem("progressTracker")) || {};
+
+    function renderCategories() {
+      const container = document.getElementById("categoriesContainer");
+      container.innerHTML = "";
+
+      Object.keys(categories).forEach((category) => {
+        const completed = Object.values(progressData[category] || {}).filter(Boolean).length;
+        const total = categories[category].length;
+        const percent = Math.round((completed / total) * 100) || 0;
+
+        const div = document.createElement("div");
+        div.classList.add("category-card");
+        div.innerHTML = `
+          <h2>${category}</h2>
+          <div class="progress-container"><div class="progress-bar" style="width: ${percent}%"></div></div>
+          <div class="modules">
+            ${categories[category].map(
+              (mod) => `
+                <label>
+                  <input type="checkbox" onchange="toggleProgress('${category}', '${mod}')"
+                    ${progressData[category]?.[mod] ? "checked" : ""}>
+                  ${mod}
+                </label>
+              `
+            ).join("")}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      updateOverallProgress();
+    }
+
+    function toggleProgress(category, module) {
+      if (!progressData[category]) progressData[category] = {};
+      progressData[category][module] = !progressData[category][module];
+      localStorage.setItem("progressTracker", JSON.stringify(progressData));
+      renderCategories();
+    }
+
+    function updateOverallProgress() {
+      let totalModules = 0, completed = 0;
+      Object.keys(categories).forEach((category) => {
+        totalModules += categories[category].length;
+        completed += Object.values(progressData[category] || {}).filter(Boolean).length;
+      });
+      const percent = Math.round((completed / totalModules) * 100) || 0;
+      document.getElementById("overallText").textContent = `${percent}%`;
+      document.getElementById("overallCircle").style.setProperty("--progress", `${percent * 3.6}deg`);
+      updateMotivation(percent);
+    }
+
+    function updateMotivation(p) {
+      const msg = document.getElementById("motivationText");
+      if (p === 0) msg.textContent = "Let's begin your learning journey!";
+      else if (p < 40) msg.textContent = "Good start! Keep going 💪";
+      else if (p < 80) msg.textContent = "You're doing great! Almost there 🌟";
+      else msg.textContent = "Amazing! You've mastered your path 🎉";
+    }
+
+    renderCategories();
+  </script>
+</body>
+</html>
